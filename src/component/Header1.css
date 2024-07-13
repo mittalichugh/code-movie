@@ -1,0 +1,21 @@
+
+.header{
+    margin: 0 2.5rem;
+    padding: .5rem 0;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headerLeft, .headerRight{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.header_icon{
+    width: 100px;
+    height: 90px;
+    cursor: pointer;
+}
