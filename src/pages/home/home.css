@@ -58,23 +58,22 @@
     right: 10px;
 }
 
-
-.poster {
-    position: relative;
-    width: 100%;
-    
+.poster-chunk {
+    display: flex;
+    justify-content: space-around;
 }
 
-.poster-image {
-    position: relative;
-    width: 100%;
-    height: 300px;
+.poster-item {
+    margin: 0 5px;
 }
 
 .poster-image img {
-    width: 100%;
-    
+    width: 150px;
+    height: 240px;
+    object-fit: cover;
 }
+
+
 
 .poster-image-overlay {
     position: absolute;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import "./movieDetails.css";
+import Header1 from '../../component/Header1';
 
 const MovieDetails = () => {
     const { id } = useParams();
@@ -8,11 +9,12 @@ const MovieDetails = () => {
     const [videoKey, setVideoKey] = useState("");
     const [isInWishlist, setIsInWishlist] = useState(false);
     const [isInContinueWatching, setIsInContinueWatching] = useState(false);
-
+<Header1/>
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`)
             .then(res => res.json())
             .then(data => {
+                console.log("Movie data:", data);
                 setMovie(data);
                 checkWishlistStatus(data.id);
                 checkContinueWatchingStatus(data.id);
@@ -22,8 +24,11 @@ const MovieDetails = () => {
         fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`)
             .then(res => res.json())
             .then(data => {
+                console.log("Video data:", data);
                 if (data.results.length > 0) {
                     setVideoKey(data.results[0].key);
+                } else {
+                    console.warn("No videos found for this movie.");
                 }
             })
             .catch(error => console.error("Error fetching movie videos:", error));
@@ -42,7 +47,6 @@ const MovieDetails = () => {
             : [...wishlist, { id: movie.id, title: movie.title, poster_path: movie.poster_path }];
         localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
         setIsInWishlist(!isInWishlist);
-        alert(isInWishlist ? "Movie removed from wishlist!" : "Movie added to wishlist!");
     };
 
     const checkContinueWatchingStatus = (movieId) => {
@@ -62,10 +66,11 @@ const MovieDetails = () => {
     };
 
     return (
+        
         <div className="movie-details">
             {movie ? (
                 <>
-                    {videoKey && (
+                    {videoKey ? (
                         <iframe
                             width="100%"
                             height="300px"
@@ -74,7 +79,10 @@ const MovieDetails = () => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title="video"
-                        ></iframe>
+                        >
+                        </iframe>
+                    ) : (
+                        <p>No video available for this movie.</p>
                     )}
                     <button className="wishlist-button" onClick={handleWishlist}>
                         {isInWishlist ? "Remove from Watchlist" : "Add to Watchlist"}
@@ -89,5 +97,4 @@ const MovieDetails = () => {
         </div>
     );
 };
-
 export default MovieDetails;
